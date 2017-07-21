@@ -1,0 +1,48 @@
+<form novalidate [formGroup]="registerFomr" (ngSubmit)="save(form)">
+  <div class="form-group">
+    <label for="firstName">First Name:</label>
+    <input type="text" class="form-control" id="firstName" name="firstName" formControlName="firstName"/>
+  </div>
+  <div class="form-group">
+    <label for="lastname">Last Name:</label>
+    <input type="text" class="form-control" id="lastname" name="lastname" formControlName="lastname"/>
+  </div>
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input type="email" class="form-control" rows="5" id="email" name="email" formControlName="email"/>
+  </div>
+  <div class="form-group">
+    <label for="rating">Rating:</label>
+    <input class="form-control" rows="5" id="rating" name="rating" formControlName="rating"/>
+    <span *ngIf="registerFomr.get('rating').errors">
+        Validation fails
+    </span>
+  </div>
+  <div class="form-group">
+    <label for="phone">Phone:</label>
+    <input class="form-control" rows="5" id="phone" name="phone" formControlName="phone"/>
+  </div>
+   <div class="radio">
+    <label>
+    <input type="radio" name="notificationMode" value="phone" formControlName="notificationMode" (click)="setNotification('phone')">
+    Phone
+  </label>
+  </div>
+  <div class="radio">
+    <label>
+    <input type="radio" name="notificationMode" value="email" formControlName="notificationMode" (click)="setNotification('email')">
+    Email
+  </label>
+  </div> 
+  <div class="checkbox">
+    <label><input type="checkbox" value="sendCatalog" name="sendCatalog" formControlName="sendCatalog" >Send Catalog.....</label>
+  </div>
+
+  <button type="button" class="btn btn-primary" (click)="getTestData()">Test Data</button>
+  <button type="submit" class="btn btn-default" [disabled]="!registerFomr.valid">Submit</button>
+</form>
+
+<br/> Dirty   : {{registerFomr.dirty}}
+<br/> Touched : {{registerFomr.touched}}
+<br/> Valid   : {{registerFomr.valid}}
+<br/> Form    : {{registerFomr.value | json}}
