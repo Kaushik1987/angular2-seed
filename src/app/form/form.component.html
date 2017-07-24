@@ -1,48 +1,95 @@
-<form novalidate [formGroup]="registerFomr" (ngSubmit)="save(form)">
+<form novalidate [formGroup]="registerFomr" (ngSubmit)="save()">
   <div class="form-group">
     <label for="firstName">First Name:</label>
-    <input type="text" class="form-control" id="firstName" name="firstName" formControlName="firstName"/>
+    <input type="text" class="form-control" id="firstName" name="firstName" formControlName="firstName" />
   </div>
   <div class="form-group">
     <label for="lastname">Last Name:</label>
-    <input type="text" class="form-control" id="lastname" name="lastname" formControlName="lastname"/>
+    <input type="text" class="form-control" id="lastname" name="lastname" formControlName="lastname" />
   </div>
-  <div class="form-group">
-    <label for="email">Email:</label>
-    <input type="email" class="form-control" rows="5" id="email" name="email" formControlName="email"/>
+  <div formGroupName="emailGroup">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" class="form-control" rows="5" id="email" name="email" formControlName="email" />
+      <!-- <span class="help-block" *ngIf="emailMessage">
+        {{emailMessage}}
+    </span> -->
+    </div>
+    <div class="form-group">
+      <label for="email">Confimr Email:</label>
+      <input type="email" class="form-control" rows="5" id="confirmEmail" name="confirmEmail" formControlName="confirmEmail" />
+    </div>
   </div>
   <div class="form-group">
     <label for="rating">Rating:</label>
-    <input class="form-control" rows="5" id="rating" name="rating" formControlName="rating"/>
-    <span *ngIf="registerFomr.get('rating').errors">
-        Validation fails
-    </span>
+    <input class="form-control" rows="5" id="rating" name="rating" formControlName="rating" />
+
   </div>
   <div class="form-group">
     <label for="phone">Phone:</label>
-    <input class="form-control" rows="5" id="phone" name="phone" formControlName="phone"/>
+    <input class="form-control" rows="5" id="phone" name="phone" formControlName="phone" />
   </div>
-   <div class="radio">
+  <div class="radio">
     <label>
-    <input type="radio" name="notificationMode" value="phone" formControlName="notificationMode" (click)="setNotification('phone')">
+    <input type="radio" name="notificationMode" value="phone" formControlName="notificationMode">
     Phone
   </label>
   </div>
   <div class="radio">
     <label>
-    <input type="radio" name="notificationMode" value="email" formControlName="notificationMode" (click)="setNotification('email')">
+    <input type="radio" name="notificationMode" value="email" formControlName="notificationMode">
     Email
   </label>
-  </div> 
+  </div>
   <div class="checkbox">
     <label><input type="checkbox" value="sendCatalog" name="sendCatalog" formControlName="sendCatalog" >Send Catalog.....</label>
   </div>
+  <div *ngIf="registerFomr.get('sendCatalog').value">
+     <div class="form-group">
+                        <div class="col-md-4 col-md-offset-2">
+                            <span>
+                                <button class="btn btn-primary"
+                                        type="button"
+		                                [disabled]="!addresses.valid"
+                                        (click)="addAddress()">
+                                    Add Another Address
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+    <div formArrayName="addresses" *ngFor="let address of addresses.controls; let i=index">
+      <div [formGroupName]="i">        
+        <div class="form-group">
+          <label for="street1">Address1:</label>
+          <input type="text" class="form-control" id="{{'street1' + i}}"  formControlName="street1" />
+        </div>
+        <div class="form-group">
+          <label for="street2">Address2:</label>
+          <input type="text" class="form-control" id="{{'street2' + i}}"  formControlName="street2" />
+        </div>
+        <div class="form-group">
+          <label for="city">City:</label>
+          <input type="text" class="form-control" id="{{'city' + i}}" formControlName="city" />
+        </div>
+        <div class="form-group">
+          <label for="state">state:</label>
+          <input type="text" class="form-control" id="{{'state' + i}}" formControlName="state" />
+        </div>
+        <div class="form-group">
+          <label for="zip">zip:</label>
+          <input type="text" class="form-control" id="{{'zip' + i}}" formControlName="zip" />
+        </div>
+      </div>
+    </div>
 
+
+  </div>
   <button type="button" class="btn btn-primary" (click)="getTestData()">Test Data</button>
   <button type="submit" class="btn btn-default" [disabled]="!registerFomr.valid">Submit</button>
 </form>
 
-<br/> Dirty   : {{registerFomr.dirty}}
+<br/> Dirty : {{registerFomr.dirty}}
 <br/> Touched : {{registerFomr.touched}}
-<br/> Valid   : {{registerFomr.valid}}
-<br/> Form    : {{registerFomr.value | json}}
+<br/> Valid : {{registerFomr.valid}}
+<br/> Form : {{registerFomr.value | json}}
+<br/> Error : {{registerFomr.errors| json}}
